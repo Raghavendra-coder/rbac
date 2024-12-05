@@ -54,7 +54,7 @@ class JWTMiddleware:
                 user_obj = User.objects.filter(email=user["email"]).first()
                 if not user_obj:
                     return self.send_unauthorized_response()
-                request.user = user_obj
+                request.auth_user = user_obj
                 role = user_obj.role
                 if not role:
                     return self.send_unauthorized_response("ROLE is missing for this user")

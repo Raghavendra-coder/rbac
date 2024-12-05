@@ -12,6 +12,8 @@ class StatusTypesEnum(Enum):
 
 class PermissionsEnum(Enum):
     CREATE_PERMISSION = "can create permissions"
+    VIEW_PERMISSION = "can view permissions"
+    DELETE_PERMISSION = "can delete permissions"
     CREATE_USERS = "can create users"
     RETRIEVE_USERS = "can retrieve users"
 
@@ -27,5 +29,5 @@ class PermissionsEnum(Enum):
 
 class DefaultRoles(Enum):
     ADMIN = PermissionsEnum.get_all_permissions()
-    SUPERVISOR = [PermissionsEnum.RETRIEVE_USERS.name]
-    STAFF = [PermissionsEnum.RETRIEVE_USERS.name]
+    SUPERVISOR = [PermissionsEnum.RETRIEVE_USERS.name, PermissionsEnum.VIEW_PERMISSION.name]
+    STAFF = [PermissionsEnum.RETRIEVE_USERS.name, PermissionsEnum.VIEW_PERMISSION.name]
