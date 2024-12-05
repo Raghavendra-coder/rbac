@@ -1,8 +1,8 @@
 from rest_framework.response import Response
 from django.conf import settings
 import jwt
-from role_and_permission.models import Role
-from enums import DefaultRoles
+from role_and_permission.models import Role, Permissions
+from enums import DefaultRoles, PermissionsEnum
 
 def create_success_response(message: str, data: any):
 
@@ -27,13 +27,28 @@ def create_error_response(message: str):
 def get_jwt_token(payload, expiry):
     return jwt.encode({"user": payload, "exp": expiry}, settings.SECRET_KEY, algorithm=settings.JWT_ALGORITHM)
 
+def add_all_permissions():
+    for permission in PermissionsEnum:
+        old_permission = Permissions.objects.filter(name=permission.name).first()
+        if not old_permission:
+            Permissions.objects.create(name=permission.name, description=permission.value)
+
+
 def add_default_roles():
     admin = Role.objects.filter(name="ADMIN").first()
     if not admin:
-        admin = Role.objects.create(name='ADMIN', permissions=DefaultRoles.ADMIN.value)
+        admin = Role.objects.create(name='ADMIN')
+    admin_permissions = Permissions.objects.filter(name__in=DefaultRoles.ADMIN.value)
+    admin.permissions.add(*list(admin_permissions))
+
     supervisor = Role.objects.filter(name="SUPERVISOR").first()
     if not supervisor:
-        supervisor = Role.objects.create(name='SUPERVISOR', permissions=DefaultRoles.SUPERVISOR.value)
+        supervisor = Role.objects.create(name='SUPERVISOR')
+    supervisor_permissions = Permissions.objects.filter(name__in=DefaultRoles.SUPERVISOR.value)
+    supervisor.permissions.add(*list(supervisor_permissions))
+
     staff = Role.objects.filter(name="STAFF").first()
     if not staff:
-        staff = Role.objects.create(name='STAFF', permissions=DefaultRoles.STAFF.value)
+        staff = Role.objects.create(name='STAFF')
+    staff_permissions = Permissions.objects.filter(name__in=DefaultRoles.STAFF.value)
+    staff.permissions.add(*list(staff_permissions))

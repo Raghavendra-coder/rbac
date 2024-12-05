@@ -30,7 +30,7 @@ class JWTMiddleware:
         department_exception = False
         try:
 
-            exception_endpoints = ['user/login/'
+            exception_endpoints = ['/user/login', '/admin/',
                                    ]
 
             if request.path == '/':
@@ -55,7 +55,7 @@ class JWTMiddleware:
                 if not user_obj:
                     return self.send_unauthorized_response()
                 request.user = user_obj
-                role = user.role
+                role = user_obj.role
                 if not role:
                     return self.send_unauthorized_response("ROLE is missing for this user")
                 request.role = role
@@ -63,11 +63,12 @@ class JWTMiddleware:
                 if role.name == "ADMIN":
                     is_admin = True
                 request.is_admin = is_admin
-                permissions_list = role.permissions
+                permissions_list = list(role.permissions.all().values("name"))
+                permissions_list = [i['name'] for i in permissions_list]
                 request.permissions = permissions_list
 
-            except Exception:
-                return self.send_unauthorized_response()
+            except Exception as e:
+                return self.send_unauthorized_response(f"{e}")
 
         response = self.get_response(request)
         return response

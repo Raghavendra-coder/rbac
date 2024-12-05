@@ -12,7 +12,6 @@ def login_service(data):
         return False, data
     user_data = UserSerializer(data).data
     jwt_data = UserJWTSerializer(data).data
-    print(jwt_data)
     user_data['access_token'] = get_jwt_token(
         jwt_data, datetime.utcnow() + settings.JWT_ACCESS_TOKEN_LIFETIME)
     user_data['refresh_token'] = get_jwt_token(

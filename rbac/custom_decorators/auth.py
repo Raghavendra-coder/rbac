@@ -9,8 +9,9 @@ def authorize(permissions):
       """
       @functools.wraps(view_func)
       def wrapper(request, *args, **kwargs):
+        my_permissions = request.permissions
         for permission in permissions:
-           if permission not in request.permissions:
+           if permission not in my_permissions:
               response = create_error_response("UNAUTHORIZED !")
               return response
         return view_func(request,*args, **kwargs)

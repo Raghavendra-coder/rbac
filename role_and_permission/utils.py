@@ -1,8 +1,12 @@
-from .models import Permissions
+from .models import Permissions, Role
 from enums import PermissionsEnum
 
-def add_all_permissions():
-    for permission in PermissionsEnum:
-        old_permission = Permissions.objects.filter(name=permission.name).first()
-        if not old_permission:
-            Permissions.objects.create(name=permission.name, description=permission.value)
+
+def add_permission(data):
+    permission = Permissions.objects.filter(name=data["name"]).first()
+    if not permission:
+        permission = Permissions.objects.create(name=data["name"], description=data["description"])
+    role = Role.objects.get(name="ADMIN")
+    role.permissions.add(permission)
+
+    return permission
