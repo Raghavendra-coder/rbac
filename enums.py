@@ -26,4 +26,6 @@ class PermissionsEnum(Enum):
 
 
 class DefaultRoles(Enum):
-    ROLE_ADMIN = PermissionsEnum.get_all_permissions()
+    ADMIN = PermissionsEnum.get_all_permissions()
+    SUPERVISOR = [PermissionsEnum.RETRIEVE_USERS.name]
+    STAFF = [PermissionsEnum.RETRIEVE_USERS.name]
