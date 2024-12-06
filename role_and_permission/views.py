@@ -5,6 +5,7 @@ from rbac.custom_decorators.auth import authorize
 from enums import PermissionsEnum
 from . import services
 from main_utils import create_error_response, create_success_response
+from .serializers import RoleSerializer
 
 # Create your views here.
 
@@ -43,5 +44,66 @@ def delete_permission(request):
     except Exception as e:
         response = create_error_response(f"error --> {e}")
     return response
+
+
+@api_view(["POST"])
+@authorize([PermissionsEnum.CREATE_ROLE.name])
+def create_custom_role(request):
+    try:
+        data = request.data
+        role = services.create_custom_role_service(data)
+        response = create_success_response("custom role created successfully !", role)
+    except Exception as e:
+        response = create_error_response(f"error --> {e}")
+    return response
+
+
+@api_view(["GET"])
+@authorize([PermissionsEnum.GET_ROLES.name])
+def get_all_roles(request):
+    try:
+        role = services.get_all_roles_service()
+        response = create_success_response("roles retrieved successfully !", role)
+    except Exception as e:
+        response = create_error_response(f"error --> {e}")
+    return response
+
+
+@api_view(["GET"])
+@authorize([PermissionsEnum.GET_ROLES.name])
+def get_my_role(request):
+    try:
+        role = request.auth_user.role
+        data = RoleSerializer(role).data
+        response = create_success_response("role retrieved successfully !", data)
+    except Exception as e:
+        response = create_error_response(f"error --> {e}")
+    return response
+
+
+@api_view(["POST"])
+@authorize([PermissionsEnum.UPDATE_ROLE.name])
+def update_role(request):
+    try:
+        data = request.data
+        role = services.update_role_service(data)
+        response = create_success_response("role updated successfully !", role)
+    except Exception as e:
+        response = create_error_response(f"error --> {e}")
+    return response
+
+
+@api_view(["POST"])
+@authorize([PermissionsEnum.UPDATE_ROLE.name])
+def delete_role(request):
+    try:
+        data = request.data
+        role = services.delete_role_service(data)
+        response = create_success_response("role deleted successfully !", role)
+    except Exception as e:
+        response = create_error_response(f"error --> {e}")
+    return response
+
+
 
 

@@ -37,18 +37,18 @@ def add_all_permissions():
 def add_default_roles():
     admin = Role.objects.filter(name="ADMIN").first()
     if not admin:
-        admin = Role.objects.create(name='ADMIN')
+        admin = Role.objects.create(name='ADMIN', is_default=True)
     admin_permissions = Permissions.objects.filter(name__in=DefaultRoles.ADMIN.value)
     admin.permissions.add(*list(admin_permissions))
 
     supervisor = Role.objects.filter(name="SUPERVISOR").first()
     if not supervisor:
-        supervisor = Role.objects.create(name='SUPERVISOR')
+        supervisor = Role.objects.create(name='SUPERVISOR', is_default=True)
     supervisor_permissions = Permissions.objects.filter(name__in=DefaultRoles.SUPERVISOR.value)
     supervisor.permissions.add(*list(supervisor_permissions))
 
     staff = Role.objects.filter(name="STAFF").first()
     if not staff:
-        staff = Role.objects.create(name='STAFF')
+        staff = Role.objects.create(name='STAFF', is_default=True)
     staff_permissions = Permissions.objects.filter(name__in=DefaultRoles.STAFF.value)
     staff.permissions.add(*list(staff_permissions))
