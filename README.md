@@ -33,5 +33,6 @@ Role-Based Access Control (RBAC) System
 16. This is bearer token.
 17. Most of the data is added for testing the functionalities.
 18. Also you can change the roles of users(only admin can do this and cannot change the role of another admin)
-18. For Admin access -> <base>/admin
+19. POSTMAN Collection is in root directory
+20. For Admin access -> <base>/admin
     credentials : username : admin , password : 12345
