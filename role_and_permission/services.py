@@ -1,5 +1,7 @@
 from . import utils
 from .serializers import *
+from user.utils import get_user_by_id
+from user.serializers import UserSerializer
 
 def create_permission_service(data):
     name = data["name"].strip()
@@ -66,3 +68,16 @@ def delete_role_service(data):
         raise Exception("default role cannot be deleted")
     role.delete()
     return "DELETED"
+
+
+def update_user_role_service(data):
+    user_id = data["user_id"]
+    user = get_user_by_id(user_id)
+    new_role_id = data["new_role_id"]
+    role = utils.get_role_by_id(new_role_id)
+    if user.role.name == "ADMIN":
+        raise Exception("cannot change the role of an ADMIN !")
+    user.role = role
+    user.save()
+    data = UserSerializer(user).data
+    return data

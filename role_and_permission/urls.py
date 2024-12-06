@@ -10,4 +10,5 @@ urlpatterns = [
     path("get_my_role/", views.get_my_role, name="get_my_role"),
     path("update_role/", views.update_role, name="update_role"),
     path("delete_role/", views.delete_role, name="delete_role"),
+    path("update_user_role/", views.update_user_role, name="update_user_role"),
     ]

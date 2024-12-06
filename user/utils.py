@@ -10,3 +10,8 @@ def check_user(email: str, password: str):
     else:
         return False, f"user with mail - {email} not found !"
     return True, user
+
+
+def get_user_by_id(id):
+    user = User.objects.get(id=id)
+    return user

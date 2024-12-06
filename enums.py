@@ -19,6 +19,7 @@ class PermissionsEnum(Enum):
     CREATE_ROLE = "can create role"
     GET_ROLES = "can retrieve all roles"
     UPDATE_ROLE = "can update role"
+    UPDATE_USER_ROLE = "can update role of a user"
     DELETE_ROLE = "can delete role"
 
     CREATE_RESOURCE = "can create resource"

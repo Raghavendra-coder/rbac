@@ -107,5 +107,18 @@ def delete_role(request):
     return response
 
 
+@api_view(['POST'])
+@authorize([PermissionsEnum.UPDATE_USER_ROLE.name])
+def update_user_role(request):
+    try:
+        data = request.data
+        role = services.update_user_role_service(data)
+        response = create_success_response("role updated successfully !", role)
+    except Exception as e:
+        response = create_error_response(f"error --> {e}")
+    return response
+
+
+
 
 
