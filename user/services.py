@@ -17,3 +17,9 @@ def login_service(data):
     user_data['refresh_token'] = get_jwt_token(
         jwt_data, datetime.utcnow() + settings.JWT_REFRESH_TOKEN_LIFETIME)
     return True, user_data
+
+
+def create_user_service(data):
+    user = utils.create_user(data)
+    final_data = UserSerializer(user).data
+    return final_data
