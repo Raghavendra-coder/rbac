@@ -16,6 +16,10 @@ class PermissionsEnum(Enum):
     DELETE_PERMISSION = "can delete permissions"
     CREATE_USERS = "can create users"
     RETRIEVE_USERS = "can retrieve users"
+    CREATE_ROLE = "can create role"
+    GET_ROLES = "can retrieve all roles"
+    UPDATE_ROLE = "can update role"
+    DELETE_ROLE = "can delete role"
 
 
     @classmethod

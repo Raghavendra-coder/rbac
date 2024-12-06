@@ -27,3 +27,37 @@ def delete_permission_service(data):
     else:
         permission.delete()
         return "DELETED"
+
+
+def create_custom_role_service(data):
+    create_role = utils.create_role(data["name"], data.get("permissions", []))
+    data = RoleSerializer(create_role).data
+    return data
+
+
+def get_all_roles_service():
+    roles = Role.objects.all()
+    data = DetailedRoleSerializer(roles, many=True).data
+    return data
+
+
+def update_role_service(data):
+    role = utils.get_role_by_id(data["id"])
+    if role.is_default:
+        raise Exception("you cannot modify default roles")
+    name = data["name"]
+    role.name = name
+    role.save()
+    role.permissions.clear()
+    permissions = Permissions.objects.filter(name__in=data["permissions"])
+    role.permissions.add(*list(permissions))
+    data = DetailedRoleSerializer(role).data
+    return data
+
+
+def delete_role_service(data):
+    role = utils.get_role_by_id(data["id"])
+    if role.is_default:
+        raise Exception("default role cannot be deleted")
+    role.delete()
+    return "DELETED"
