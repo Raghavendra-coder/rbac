@@ -12,10 +12,12 @@ def add_permission(data):
 
 
 def create_role(name, permissions):
-    role = Role.objects.filter(name=name)
+    name = name.strip()
+    final_name = name.upper().replace(" ", "_")
+    role = Role.objects.filter(name=final_name)
     if role:
         raise Exception(f"role already exists")
-    role = Role.objects.create(name=name)
+    role = Role.objects.create(name=final_name)
     permission_objects = Permissions.objects.filter(name__in=permissions)
     role.permissions.add(*list(permission_objects))
     return role
