@@ -21,6 +21,11 @@ class PermissionsEnum(Enum):
     UPDATE_ROLE = "can update role"
     DELETE_ROLE = "can delete role"
 
+    CREATE_RESOURCE = "can create resource"
+    GET_RESOURCE = "can retrieve resource"
+    UPDATE_RESOURCE = "can update resource"
+    DELETE_RESOURCE = "can delete resource"
+
 
     @classmethod
     def get_all_permissions(cls):
@@ -33,5 +38,6 @@ class PermissionsEnum(Enum):
 
 class DefaultRoles(Enum):
     ADMIN = PermissionsEnum.get_all_permissions()
-    SUPERVISOR = [PermissionsEnum.RETRIEVE_USERS.name, PermissionsEnum.VIEW_PERMISSION.name]
-    STAFF = [PermissionsEnum.RETRIEVE_USERS.name, PermissionsEnum.VIEW_PERMISSION.name]
+    SUPERVISOR = [PermissionsEnum.RETRIEVE_USERS.name, PermissionsEnum.VIEW_PERMISSION.name, PermissionsEnum.CREATE_PERMISSION.name,
+                  PermissionsEnum.GET_RESOURCE.name, PermissionsEnum.UPDATE_RESOURCE.name, PermissionsEnum.DELETE_RESOURCE.name]
+    STAFF = [PermissionsEnum.RETRIEVE_USERS.name, PermissionsEnum.VIEW_PERMISSION.name, PermissionsEnum.GET_RESOURCE.name]
