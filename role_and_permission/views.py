@@ -5,7 +5,7 @@ from rbac.custom_decorators.auth import authorize
 from enums import PermissionsEnum
 from . import services
 from main_utils import create_error_response, create_success_response
-from .serializers import RoleSerializer
+from .serializers import DetailedRoleSerializer
 
 # Create your views here.
 
@@ -62,7 +62,9 @@ def create_custom_role(request):
 @authorize([PermissionsEnum.GET_ROLES.name])
 def get_all_roles(request):
     try:
-        role = services.get_all_roles_service()
+        my_role = request.query_params.get("my_role")
+        user = request.auth_user
+        role = services.get_all_roles_service(user, my_role)
         response = create_success_response("roles retrieved successfully !", role)
     except Exception as e:
         response = create_error_response(f"error --> {e}")
@@ -74,7 +76,7 @@ def get_all_roles(request):
 def get_my_role(request):
     try:
         role = request.auth_user.role
-        data = RoleSerializer(role).data
+        data = DetailedRoleSerializer(role).data
         response = create_success_response("role retrieved successfully !", data)
     except Exception as e:
         response = create_error_response(f"error --> {e}")
